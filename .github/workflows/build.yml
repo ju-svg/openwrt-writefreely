@@ -16,12 +16,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch:
-          - aarch64_generic
         include:
           - arch: aarch64_generic
-            target: armvirt/64
-            sdk_url: https://downloads.openwrt.org/releases/23.05.2/targets/armvirt/64/openwrt-sdk-23.05.2-armvirt-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
+            target: armsr/armv8
+            sdk_url: https://downloads.openwrt.org/releases/23.05.5/targets/armsr/armv8/openwrt-sdk-23.05.5-armsr-armv8_gcc-12.3.0_musl.Linux-x86_64.tar.xz
 
     steps:
       - name: Checkout code
