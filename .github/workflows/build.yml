@@ -11,51 +11,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         arch:
           - x86_64
           - arm_cortex-a7
           - arm_cortex-a9
           - aarch64_generic
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Setup Environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential ccache ecj fastjar file g++ gawk \
-        gettext git java-propose-classpath libelf-dev libncurses5-dev \
-        libncursesw5-dev libssl-dev python python2.7-dev python3 unzip wget \
-        python3-distutils python3-setuptools python3-dev rsync subversion \
-        swig time xsltproc zlib1g-dev 
-
-    - name: Setup OpenWrt SDK
-      run: |
-        wget https://downloads.openwrt.org/releases/22.03.5/targets/x86/64/openwrt-sdk-22.03.5-x86-64_gcc-11.2.0_musl.Linux-x86_64.tar.xz
-        tar xf openwrt-sdk-*.tar.xz
-        mv openwrt-sdk-* sdk
-
-    - name: Update feeds
-      run: |
-        cd sdk
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
-
-    - name: Setup package
-      run: |
-        cd sdk
-        mkdir -p package/writefreely
-        cp -r ../Makefile package/writefreely/
-
-    - name: Build package
-      run: |
-        cd sdk
-        make defconfig
-        make package/writefreely/compile V=s
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: writefreely-${{ matrix.arch }}
-        path: sdk/bin/packages/*/writefreely/writefreely_*.ipk
+        include:
+          - arch: x86_64
+            target: x86/64
+            sdk_url: https://downloads.openwrt.org/releases/22.03.5/targets/x86/64/openwrt-sdk-22.03.
