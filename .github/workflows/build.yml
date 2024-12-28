@@ -59,7 +59,10 @@ jobs:
         run: |
           wget ${{ matrix.sdk_url }}
           tar xf openwrt-sdk-*.tar.xz
-          mv openwrt-sdk-* sdk
+          SDK_DIR=$(ls -d openwrt-sdk-*)
+          echo "Found SDK directory: $SDK_DIR"
+          mv "$SDK_DIR" sdk
+
 
       - name: Setup package
         run: |
