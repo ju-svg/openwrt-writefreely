@@ -76,10 +76,21 @@ jobs:
       - name: Setup package
         run: |
           cd sdk
-          # 添加 Go 语言支持
-          echo "src-git packages https://git.openwrt.org/feed/packages.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2" > feeds.conf
-          ./scripts/feeds update packages
+          # 配置所有必要的 feeds
+          cat > feeds.conf.default << EOF
+          src-git packages https://git.openwrt.org/feed/packages.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2
+          src-git luci https://git.openwrt.org/project/luci.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2
+          src-git routing https://git.openwrt.org/feed/routing.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2
+          src-git telephony https://git.openwrt.org/feed/telephony.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2
+          EOF
+          
+          # 更新所有 feeds
+          ./scripts/feeds update -a
+          # 安装所有 feeds
+          ./scripts/feeds install -a
+          # 特别确保安装 golang
           ./scripts/feeds install golang
+          
           # 设置我们的包
           mkdir -p package/writefreely
           cp -r ../writefreely/* package/writefreely/
