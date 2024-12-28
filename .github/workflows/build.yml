@@ -76,12 +76,12 @@ jobs:
       - name: Setup package
         run: |
           cd sdk
-          # 配置所有必要的 feeds
+          # 配置 feeds，不指定特定的 commit
           cat > feeds.conf.default << EOF
-          src-git packages https://git.openwrt.org/feed/packages.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2
-          src-git luci https://git.openwrt.org/project/luci.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2
-          src-git routing https://git.openwrt.org/feed/routing.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2
-          src-git telephony https://git.openwrt.org/feed/telephony.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2
+          src-git packages https://git.openwrt.org/feed/packages.git
+          src-git luci https://git.openwrt.org/project/luci.git
+          src-git routing https://git.openwrt.org/feed/routing.git
+          src-git telephony https://git.openwrt.org/feed/telephony.git
           EOF
           
           # 更新所有 feeds
