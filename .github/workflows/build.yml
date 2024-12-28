@@ -57,12 +57,21 @@ jobs:
 
       - name: Setup OpenWrt SDK
         run: |
+          SDK_FILE="openwrt-sdk-23.05.5-armsr-armv8_gcc-12.3.0_musl.Linux-x86_64.tar.xz"
           wget ${{ matrix.sdk_url }}
-          tar xf openwrt-sdk-*.tar.xz
-          SDK_DIR=$(ls -d openwrt-sdk-*)
+          echo "Current directory contents:"
+          ls -la
+          echo "Extracting SDK..."
+          tar xf "$SDK_FILE"
+          echo "After extraction, directory contents:"
+          ls -la
+          SDK_DIR="openwrt-sdk-23.05.5-armsr-armv8_gcc-12.3.0_musl.Linux-x86_64"
+          if [ ! -d "$SDK_DIR" ]; then
+            echo "ERROR: SDK directory '$SDK_DIR' not found!"
+            exit 1
+          fi
           echo "Found SDK directory: $SDK_DIR"
           mv "$SDK_DIR" sdk
-
 
       - name: Setup package
         run: |
