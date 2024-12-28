@@ -76,6 +76,11 @@ jobs:
       - name: Setup package
         run: |
           cd sdk
+          # 添加 Go 语言支持
+          echo "src-git packages https://git.openwrt.org/feed/packages.git^0da9f824ea74e48f360d1258f2649ea6a1a05ef2" > feeds.conf
+          ./scripts/feeds update packages
+          ./scripts/feeds install golang
+          # 设置我们的包
           mkdir -p package/writefreely
           cp -r ../writefreely/* package/writefreely/
 
